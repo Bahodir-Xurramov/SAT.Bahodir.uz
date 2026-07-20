@@ -3,11 +3,13 @@ html,body{width:100%;height:100%;overflow:hidden;background:#08111d;color:#edf2f
 body{display:flex;align-items:center;justify-content:center}
 .page-shell{position:relative;width:100%;min-height:100vh;overflow:hidden}
 #bgCanvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0}
-.page-content{position:relative;z-index:1;display:grid;place-items:center;height:100vh;padding:24px}
+.page-content{position:relative;z-index:1;display:grid;place-items:center;height:100vh;padding:24px;transition:transform .15s ease-out}
 .page{display:none;width:100%;max-width:960px;}
 .page.active{display:block}
 .home-panel{display:grid;gap:24px;padding:40px;border-radius:28px;background:rgba(10,25,50,0.85);box-shadow:0 20px 90px rgba(0,0,0,0.35);backdrop-filter:blur(18px)}
 .hero-copy{max-width:680px}
+.brand-title{font-size:clamp(3.6rem,6vw,5.5rem);line-height:1;margin:0;color:#fff}
+.hero-lead{font-size:1.2rem;color:#dbe9ff;margin-top:0.75rem}
 .eyebrow{display:inline-block;margin-bottom:16px;padding:8px 16px;border-radius:999px;background:rgba(52,121,255,0.15);color:#8daad9;text-transform:uppercase;letter-spacing:.14em;font-size:.78rem}
 h1{font-size:clamp(2.8rem,4vw,5rem);line-height:1.02;margin:0;color:#fff}
 p{font-size:1rem;line-height:1.75;color:rgba(255,255,255,0.85);max-width:42rem}
