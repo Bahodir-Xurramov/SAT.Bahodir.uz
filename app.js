@@ -2,19 +2,26 @@ const qs = selector => document.querySelector(selector);
 const qsa = selector => Array.from(document.querySelectorAll(selector));
 
 const pageHome = qs('#pageHome');
+const pageAuth = qs('#pageAuth');
+const pageSignIn = qs('#pageSignIn');
 const pageRegister = qs('#pageRegister');
 const pageAchievements = qs('#pageAchievements');
 const bgCanvas = qs('#bgCanvas');
-const pageContent = qs('.page-content');
 const startButton = qs('#startButton');
+const goSignIn = qs('#goSignIn');
+const goSignInFromAuth = qs('#goSignInFromAuth');
+const goSignUp = qs('#goSignUp');
+const authBack = qs('#authBack');
+const backFromSignIn = qs('#backFromSignIn');
 const backToHome = qs('#backToHome');
 const backToRegister = qs('#backToRegister');
 const registerForm = qs('#registerForm');
+const signInForm = qs('#signInForm');
 const achievementForm = qs('#achievementForm');
 const achievementResults = qs('#achievementResults');
 
 function showPage(page) {
-  [pageHome, pageRegister, pageAchievements].forEach(p => p.classList.remove('active'));
+  [pageHome, pageAuth, pageSignIn, pageRegister, pageAchievements].forEach(p => p.classList.remove('active'));
   page.classList.add('active');
 }
 
@@ -32,24 +39,7 @@ function initCanvas() {
     vy: (Math.random() - 0.5) * 0.9
   }));
 
-  const mouse = { x: width / 2, y: height / 2 };
-
-  window.addEventListener('mousemove', e => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-
-    if (bgCanvas) {
-      const offsetX = (e.clientX - width / 2) * 0.01;
-      const offsetY = (e.clientY - height / 2) * 0.01;
-      bgCanvas.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
-    }
-  });
-
-  window.addEventListener('mouseout', () => {
-    if (bgCanvas) {
-      bgCanvas.style.transform = 'translate3d(0, 0, 0)';
-    }
-  });
+  let drift = 0;
 
   function draw() {
     ctx.clearRect(0, 0, width, height);
@@ -61,15 +51,6 @@ function initCanvas() {
       node.y += node.vy;
       if (node.x < 0 || node.x > width) node.vx *= -1;
       if (node.y < 0 || node.y > height) node.vy *= -1;
-
-      const dx = node.x - mouse.x;
-      const dy = node.y - mouse.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 80) {
-        const push = (80 - dist) * 0.0005;
-        node.x += dx * push;
-        node.y += dy * push;
-      }
     });
 
     nodes.forEach((node, idx) => {
@@ -78,8 +59,8 @@ function initCanvas() {
         const dx = node.x - other.x;
         const dy = node.y - other.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 190) {
-          ctx.strokeStyle = `rgba(94, 180, 255, ${1 - dist / 190})`;
+        if (dist < 180) {
+          ctx.strokeStyle = `rgba(94, 180, 255, ${1 - dist / 180})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(node.x, node.y);
@@ -95,6 +76,11 @@ function initCanvas() {
       ctx.arc(node.x, node.y, 4, 0, Math.PI * 2);
       ctx.fill();
     });
+
+    drift += 0.006;
+    const offsetX = Math.sin(drift * 0.7) * 14;
+    const offsetY = Math.cos(drift * 0.5) * 12;
+    bgCanvas.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
 
     requestAnimationFrame(draw);
   }
@@ -146,13 +132,42 @@ function renderAchievementPlan(plan) {
 }
 
 function initPageEvents() {
-  startButton.addEventListener('click', () => showPage(pageRegister));
+  startButton.addEventListener('click', () => showPage(pageAuth));
+  goSignIn.addEventListener('click', () => showPage(pageSignIn));
+  goSignInFromAuth.addEventListener('click', () => showPage(pageSignIn));
+  goSignUp.addEventListener('click', () => showPage(pageRegister));
+  authBack.addEventListener('click', () => showPage(pageHome));
+  backFromSignIn.addEventListener('click', () => showPage(pageAuth));
   backToHome.addEventListener('click', () => showPage(pageHome));
   backToRegister.addEventListener('click', () => showPage(pageRegister));
 
+  signInForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const email = qs('#signInEmail').value.trim();
+    const password = qs('#signInPassword').value.trim();
+    const stored = localStorage.getItem('satBoosterUser');
+
+    if (!email || !password) {
+      alert('Please complete both sign in fields.');
+      return;
+    }
+
+    if (!stored) {
+      alert('No account found. Please sign up first.');
+      return;
+    }
+
+    const user = JSON.parse(stored);
+    if (user.email !== email || user.password !== password) {
+      alert('Email or password is incorrect.');
+      return;
+    }
+
+    showPage(pageAchievements);
+  });
+
   registerForm.addEventListener('submit', event => {
     event.preventDefault();
-
     const user = {
       name: qs('#regName').value.trim(),
       surname: qs('#regSurname').value.trim(),
@@ -172,7 +187,6 @@ function initPageEvents() {
 
   achievementForm.addEventListener('submit', event => {
     event.preventDefault();
-
     const values = {
       target: qs('#achieveTarget').value,
       current: qs('#achieveCurrent').value,
