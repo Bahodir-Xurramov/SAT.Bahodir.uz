@@ -97,6 +97,24 @@
         </div>
       </section>
 
+      <section id="pageVerify" class="page">
+        <div class="card-panel">
+          <h2>Verify your email</h2>
+          <p>We sent a verification code to your email. Enter it below to activate your account.</p>
+          <form id="verifyForm">
+            <label>
+              Verification code
+              <input type="text" id="verifyCode" placeholder="123456" required>
+            </label>
+            <div class="actions">
+              <button type="submit" class="primary">Verify account</button>
+              <button type="button" id="backToSignUp" class="secondary">Back</button>
+            </div>
+          </form>
+          <p class="muted-text">If you don’t see the code, check your spam folder or try signing in again.</p>
+        </div>
+      </section>
+
       <section id="pageAchievements" class="page">
         <div class="card-panel">
           <h2>Achievement planning</h2>
@@ -127,6 +145,20 @@
             </div>
           </form>
           <div id="achievementResults" class="achievement-results hidden"></div>
+        </div>
+      </section>
+
+      <section id="pagePractice" class="page">
+        <div class="card-panel">
+          <h2>Your practice dashboard</h2>
+          <p>Welcome back. This page shows your saved progress and practice overview.</p>
+          <div class="dashboard-panel" id="practiceDashboard">
+            <p class="dashboard-welcome">Loading your practice workspace...</p>
+          </div>
+          <div class="actions">
+            <button type="button" id="viewPlan" class="primary">View current plan</button>
+            <button type="button" id="signOut" class="secondary">Sign out</button>
+          </div>
         </div>
       </section>
     </div>
