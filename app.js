@@ -4,6 +4,8 @@ const qsa = selector => Array.from(document.querySelectorAll(selector));
 const pageHome = qs('#pageHome');
 const pageAuth = qs('#pageAuth');
 const pageSignIn = qs('#pageSignIn');
+const pageResetRequest = qs('#pageResetRequest');
+const pageResetVerify = qs('#pageResetVerify');
 const pageRegister = qs('#pageRegister');
 const pageVerify = qs('#pageVerify');
 const pageAchievements = qs('#pageAchievements');
@@ -18,6 +20,11 @@ const backFromSignIn = qs('#backFromSignIn');
 const backToHome = qs('#backToHome');
 const backToRegister = qs('#backToRegister');
 const backToSignUp = qs('#backToSignUp');
+const forgotPassword = qs('#forgotPassword');
+const resetRequestForm = qs('#resetRequestForm');
+const resetVerifyForm = qs('#resetVerifyForm');
+const cancelReset = qs('#cancelReset');
+const cancelResetVerify = qs('#cancelResetVerify');
 const registerForm = qs('#registerForm');
 const verifyForm = qs('#verifyForm');
 const signInForm = qs('#signInForm');
@@ -28,7 +35,7 @@ const viewPlan = qs('#viewPlan');
 const signOut = qs('#signOut');
 
 function showPage(page) {
-  [pageHome, pageAuth, pageSignIn, pageRegister, pageVerify, pageAchievements, pagePractice].forEach(p => p.classList.remove('active'));
+  [pageHome, pageAuth, pageSignIn, pageResetRequest, pageResetVerify, pageRegister, pageVerify, pageAchievements, pagePractice].forEach(p => p.classList.remove('active'));
   page.classList.add('active');
 }
 
@@ -196,6 +203,67 @@ function initPageEvents() {
       button.textContent = showing ? 'Show' : 'Hide';
       button.setAttribute('aria-label', `${showing ? 'Show' : 'Hide'} password`);
     });
+  });
+
+  forgotPassword.addEventListener('click', () => showPage(pageResetRequest));
+  cancelReset.addEventListener('click', () => showPage(pageSignIn));
+  cancelResetVerify.addEventListener('click', () => showPage(pageResetRequest));
+
+  resetRequestForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const email = qs('#resetEmail').value.trim();
+    const stored = localStorage.getItem('satBoosterUser');
+
+    if (!email) {
+      alert('Please enter an email address.');
+      return;
+    }
+
+    if (!stored) {
+      alert('No account found with that email.');
+      return;
+    }
+
+    const user = JSON.parse(stored);
+    if (user.email !== email) {
+      alert('No account found with that email.');
+      return;
+    }
+
+    user.resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+    localStorage.setItem('satBoosterUser', JSON.stringify(user));
+    alert(`A verification code has been sent to ${email}. Code: ${user.resetCode}`);
+    showPage(pageResetVerify);
+  });
+
+  resetVerifyForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const code = qs('#resetCode').value.trim();
+    const newPassword = qs('#resetPassword').value.trim();
+    const stored = localStorage.getItem('satBoosterUser');
+
+    if (!stored) {
+      alert('No password reset request is active.');
+      return;
+    }
+
+    const user = JSON.parse(stored);
+    if (!user.resetCode || user.resetCode !== code) {
+      alert('Reset code is incorrect.');
+      return;
+    }
+
+    if (!newPassword) {
+      alert('Please enter a new password.');
+      return;
+    }
+
+    user.password = newPassword;
+    delete user.resetCode;
+    user.lastSignedIn = true;
+    localStorage.setItem('satBoosterUser', JSON.stringify(user));
+    populatePracticeDashboard(user);
+    showPage(pagePractice);
   });
 
   signInForm.addEventListener('submit', event => {
