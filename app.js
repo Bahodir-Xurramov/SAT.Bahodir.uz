@@ -46,8 +46,6 @@ function initCanvas() {
     vy: (Math.random() - 0.5) * 0.9
   }));
 
-  let drift = 0;
-
   function draw() {
     ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = 'rgba(8, 16, 34, 0.82)';
@@ -83,11 +81,6 @@ function initCanvas() {
       ctx.arc(node.x, node.y, 4, 0, Math.PI * 2);
       ctx.fill();
     });
-
-    drift += 0.006;
-    const offsetX = Math.sin(drift * 0.7) * 14;
-    const offsetY = Math.cos(drift * 0.5) * 12;
-    bgCanvas.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
 
     requestAnimationFrame(draw);
   }
