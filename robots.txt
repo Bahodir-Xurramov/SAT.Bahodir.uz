@@ -1,0 +1,6 @@
+# Allow all user agents to crawl the site
+User-agent: *
+Allow: /
+
+# Update the Sitemap URL below to your deployed site before submitting to Search Console
+Sitemap: https://YOUR_DOMAIN_OR_GITHUB_PAGES/sitemap.xml
