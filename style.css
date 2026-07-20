@@ -20,6 +20,12 @@ p{font-size:1rem;line-height:1.75;color:rgba(255,255,255,0.85);max-width:42rem}
 label{display:block;margin-top:18px;color:#e6efff;font-size:0.98rem}
 input[type=text],input[type=email],input[type=password],input[type=number]{width:100%;margin-top:8px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f8fbff}
 input::placeholder{color:rgba(255,255,255,0.45)}
+.password-field{margin-top:18px}
+.password-field label{display:block;margin-bottom:8px;color:#e6efff;font-size:0.98rem}
+.password-input-wrap{position:relative;display:flex;align-items:center}
+.password-input-wrap input{flex:1}
+.password-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);color:#f8fbff;padding:10px 12px;border-radius:12px;cursor:pointer;transition:background 0.2s ease}
+.password-toggle:hover{background:rgba(255,255,255,0.14)}
 fieldset{margin-top:18px;padding:18px 18px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:18px;color:#cbd6ef}
 fieldset legend{padding:0 8px;color:#8aadff;font-size:0.9rem}
 fieldset label{display:inline-flex;align-items:center;gap:10px;margin-right:16px;margin-top:12px;font-size:0.95rem}
@@ -41,4 +47,3 @@ button.secondary:hover,button.primary:hover{filter:brightness(1.05)}
 @media(max-width:720px){.page-content{padding:16px}
 .card-panel{padding:24px}
 h1{font-size:2.8rem}}
-
