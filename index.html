@@ -25,15 +25,49 @@
             <p>Sign in, set a score goal, and build a personalized achievement plan designed for your strengths, weaknesses, and weekly rhythm.</p>
           </div>
           <div class="hero-actions">
-            <button id="startButton" class="primary">Begin onboarding</button>
+            <button id="startButton" class="primary">Start exploring</button>
+            <button id="goSignIn" class="secondary">Sign in</button>
           </div>
+        </div>
+      </section>
+
+      <section id="pageAuth" class="page">
+        <div class="card-panel">
+          <h2>Welcome back</h2>
+          <p>Choose whether you want to sign in or create a new account before continuing.</p>
+          <div class="actions">
+            <button id="goSignInFromAuth" class="secondary">Sign in</button>
+            <button id="goSignUp" class="primary">Sign up</button>
+            <button id="authBack" class="secondary">Back</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="pageSignIn" class="page">
+        <div class="card-panel">
+          <h2>Sign in</h2>
+          <p>Use your email and password to continue.</p>
+          <form id="signInForm">
+            <label>
+              Email address
+              <input type="email" id="signInEmail" placeholder="you@example.com" required>
+            </label>
+            <label>
+              Password
+              <input type="password" id="signInPassword" placeholder="Password" required>
+            </label>
+            <div class="actions">
+              <button type="submit" class="primary">Sign in</button>
+              <button type="button" id="backFromSignIn" class="secondary">Back</button>
+            </div>
+          </form>
         </div>
       </section>
 
       <section id="pageRegister" class="page">
         <div class="card-panel">
-          <h2>Create your account</h2>
-          <p>Enter your name, nickname, and email so we can save your plan and keep your progress ready.</p>
+          <h2>Sign up</h2>
+          <p>Create your account and you’ll enter automatically once registration is complete.</p>
           <form id="registerForm">
             <label>
               First name
