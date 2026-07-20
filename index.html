@@ -63,6 +63,50 @@
               <button type="submit" class="primary">Sign in</button>
               <button type="button" id="backFromSignIn" class="secondary">Back</button>
             </div>
+            <div class="actions">
+              <button type="button" id="forgotPassword" class="secondary">Forgot password?</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="pageResetRequest" class="page">
+        <div class="card-panel">
+          <h2>Reset password</h2>
+          <p>Enter the email address linked to your account and we’ll send a verification code.</p>
+          <form id="resetRequestForm">
+            <label>
+              Email address
+              <input type="email" id="resetEmail" placeholder="you@example.com" required>
+            </label>
+            <div class="actions">
+              <button type="submit" class="primary">Send code</button>
+              <button type="button" id="cancelReset" class="secondary">Back</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="pageResetVerify" class="page">
+        <div class="card-panel">
+          <h2>Confirm reset</h2>
+          <p>Enter the code from your email and choose a new password.</p>
+          <form id="resetVerifyForm">
+            <label>
+              Verification code
+              <input type="text" id="resetCode" placeholder="123456" required>
+            </label>
+            <div class="password-field">
+              <label for="resetPassword">New password</label>
+              <div class="password-input-wrap">
+                <input type="password" id="resetPassword" placeholder="New password" required>
+                <button type="button" class="password-toggle" data-target="resetPassword" aria-label="Show password">Show</button>
+              </div>
+            </div>
+            <div class="actions">
+              <button type="submit" class="primary">Reset password</button>
+              <button type="button" id="cancelResetVerify" class="secondary">Back</button>
+            </div>
           </form>
         </div>
       </section>
