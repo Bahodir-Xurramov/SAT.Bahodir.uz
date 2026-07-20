@@ -1,5 +1,3 @@
-// Simple SAT routine generator prototype
-
 const qs = selector => document.querySelector(selector);
 const qsa = selector => Array.from(document.querySelectorAll(selector));
 
@@ -7,6 +5,7 @@ const pageHome = qs('#pageHome');
 const pageRegister = qs('#pageRegister');
 const pageAchievements = qs('#pageAchievements');
 const bgCanvas = qs('#bgCanvas');
+const pageContent = qs('.page-content');
 const startButton = qs('#startButton');
 const backToHome = qs('#backToHome');
 const backToRegister = qs('#backToRegister');
@@ -26,7 +25,7 @@ function initCanvas() {
   bgCanvas.width = width;
   bgCanvas.height = height;
 
-  const nodes = Array.from({ length: 24 }, () => ({
+  const nodes = Array.from({ length: 60 }, () => ({
     x: Math.random() * width,
     y: Math.random() * height,
     vx: (Math.random() - 0.5) * 0.9,
@@ -38,6 +37,18 @@ function initCanvas() {
   window.addEventListener('mousemove', e => {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
+
+    if (pageContent) {
+      const offsetX = (e.clientX - width / 2) * 0.03;
+      const offsetY = (e.clientY - height / 2) * 0.03;
+      pageContent.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
+    }
+  });
+
+  window.addEventListener('mouseout', () => {
+    if (pageContent) {
+      pageContent.style.transform = 'translate3d(0, 0, 0)';
+    }
   });
 
   function draw() {
@@ -67,8 +78,8 @@ function initCanvas() {
         const dx = node.x - other.x;
         const dy = node.y - other.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 160) {
-          ctx.strokeStyle = `rgba(94, 180, 255, ${1 - dist / 160})`;
+        if (dist < 190) {
+          ctx.strokeStyle = `rgba(94, 180, 255, ${1 - dist / 190})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(node.x, node.y);
