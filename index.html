@@ -1,1 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SAT Booster — Prototype</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>SAT Booster</h1>
+    <section class="card" id="intro">
+      <p>Welcome! We'll ask a few quick questions to build a personalized daily routine to boost your SAT score.</p>
+    </section>
 
+    <form id="profileForm" class="card">
+      <label>
+        Name (optional)
+        <input type="text" id="name" placeholder="Your name">
+      </label>
+
+      <label>
+        Current SAT score (Bluebook or real)
+        <input type="number" id="currentScore" min="400" max="1600" placeholder="e.g. 1050" required>
+      </label>
+
+      <label>
+        Target SAT score
+        <input type="number" id="targetScore" min="400" max="1600" placeholder="e.g. 1300" required>
+      </label>
+
+      <label>
+        Test date (optional)
+        <input type="date" id="testDate">
+      </label>
+
+      <fieldset class="chips">
+        <legend>Areas you want to focus on (optional)</legend>
+        <label><input type="checkbox" id="focusMath"> Math</label>
+        <label><input type="checkbox" id="focusReading"> Reading</label>
+        <label><input type="checkbox" id="focusWriting"> Writing/Grammar</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Weak subtopics (mark any that apply)</legend>
+        <div class="subtopics">
+          <strong>Math</strong>
+          <label><input type="checkbox" class="math-topic" value="Algebra"> Algebra</label>
+          <label><input type="checkbox" class="math-topic" value="Geometry"> Geometry</label>
+          <label><input type="checkbox" class="math-topic" value="Trigonometry"> Trigonometry</label>
+          <label><input type="checkbox" class="math-topic" value="Functions"> Functions</label>
+
+          <strong>Reading</strong>
+          <label><input type="checkbox" class="reading-topic" value="Evidence"> Evidence</label>
+          <label><input type="checkbox" class="reading-topic" value="CommandOfEvidence"> Command of Evidence</label>
+          <label><input type="checkbox" class="reading-topic" value="WordsInContext"> Words in Context</label>
+
+          <strong>Writing</strong>
+          <label><input type="checkbox" class="writing-topic" value="Grammar"> Grammar</label>
+          <label><input type="checkbox" class="writing-topic" value="Punctuation"> Punctuation</label>
+          <label><input type="checkbox" class="writing-topic" value="Rhetoric"> Rhetoric/Structure</label>
+        </div>
+      </fieldset>
+
+      <label>
+        Available study hours per day (avg)
+        <input type="number" id="hoursPerDay" step="0.25" min="0.25" max="12" value="1">
+      </label>
+
+      <div class="actions">
+        <button type="submit">Create my Routine</button>
+        <button type="button" id="loadBtn">Load saved</button>
+        <button type="button" id="clearBtn">Clear</button>
+      </div>
+    </form>
+
+    <section class="card" id="routine"></section>
+    <section class="card" id="progress"></section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
