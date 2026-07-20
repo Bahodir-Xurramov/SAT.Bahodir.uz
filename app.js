@@ -5,7 +5,9 @@ const pageHome = qs('#pageHome');
 const pageAuth = qs('#pageAuth');
 const pageSignIn = qs('#pageSignIn');
 const pageRegister = qs('#pageRegister');
+const pageVerify = qs('#pageVerify');
 const pageAchievements = qs('#pageAchievements');
+const pagePractice = qs('#pagePractice');
 const bgCanvas = qs('#bgCanvas');
 const startButton = qs('#startButton');
 const goSignIn = qs('#goSignIn');
@@ -15,13 +17,18 @@ const authBack = qs('#authBack');
 const backFromSignIn = qs('#backFromSignIn');
 const backToHome = qs('#backToHome');
 const backToRegister = qs('#backToRegister');
+const backToSignUp = qs('#backToSignUp');
 const registerForm = qs('#registerForm');
+const verifyForm = qs('#verifyForm');
 const signInForm = qs('#signInForm');
 const achievementForm = qs('#achievementForm');
 const achievementResults = qs('#achievementResults');
+const practiceDashboard = qs('#practiceDashboard');
+const viewPlan = qs('#viewPlan');
+const signOut = qs('#signOut');
 
 function showPage(page) {
-  [pageHome, pageAuth, pageSignIn, pageRegister, pageAchievements].forEach(p => p.classList.remove('active'));
+  [pageHome, pageAuth, pageSignIn, pageRegister, pageVerify, pageAchievements, pagePractice].forEach(p => p.classList.remove('active'));
   page.classList.add('active');
 }
 
@@ -131,6 +138,50 @@ function renderAchievementPlan(plan) {
   `;
 }
 
+function loadActiveSession() {
+  const stored = localStorage.getItem('satBoosterUser');
+  if (!stored) return false;
+
+  const profile = JSON.parse(stored);
+  if (profile.verified && profile.lastSignedIn) {
+    populatePracticeDashboard(profile);
+    showPage(pagePractice);
+    return true;
+  }
+
+  return false;
+}
+
+function populatePracticeDashboard(profile) {
+  if (!practiceDashboard) return;
+
+  const name = profile.nickname || profile.name || 'Student';
+  const achievementSummary = profile.achievementPlan ? profile.achievementPlan : null;
+  practiceDashboard.innerHTML = `
+    <p class="dashboard-welcome">Welcome back, <strong>${name}</strong>!</p>
+    <p>Your email: ${profile.email}</p>
+    <p>Status: ${profile.verified ? 'Verified' : 'Pending verification'}</p>
+    <div class="dashboard-stats">
+      <p><strong>Saved score goal:</strong> ${achievementSummary ? achievementSummary.target : 'Not set yet'}</p>
+      <p><strong>Preferred focus:</strong> ${achievementSummary ? achievementSummary.focus : 'No focus set'}</p>
+    </div>
+  `;
+}
+
+function saveAchievementSummary(values) {
+  const stored = localStorage.getItem('satBoosterUser');
+  if (!stored) return;
+
+  const profile = JSON.parse(stored);
+  profile.achievementPlan = {
+    target: values.target,
+    current: values.current,
+    hours: values.hours,
+    focus: values.topics.length ? values.topics.join(', ') : 'Balanced review across all sections'
+  };
+  localStorage.setItem('satBoosterUser', JSON.stringify(profile));
+}
+
 function initPageEvents() {
   startButton.addEventListener('click', () => showPage(pageAuth));
   goSignIn.addEventListener('click', () => showPage(pageSignIn));
@@ -140,6 +191,7 @@ function initPageEvents() {
   backFromSignIn.addEventListener('click', () => showPage(pageAuth));
   backToHome.addEventListener('click', () => showPage(pageHome));
   backToRegister.addEventListener('click', () => showPage(pageRegister));
+  backToSignUp.addEventListener('click', () => showPage(pageRegister));
 
   signInForm.addEventListener('submit', event => {
     event.preventDefault();
@@ -163,7 +215,10 @@ function initPageEvents() {
       return;
     }
 
-    showPage(pageAchievements);
+    user.lastSignedIn = true;
+    localStorage.setItem('satBoosterUser', JSON.stringify(user));
+    populatePracticeDashboard(user);
+    showPage(pagePractice);
   });
 
   registerForm.addEventListener('submit', event => {
@@ -173,7 +228,10 @@ function initPageEvents() {
       surname: qs('#regSurname').value.trim(),
       nickname: qs('#regNickname').value.trim(),
       email: qs('#regEmail').value.trim(),
-      password: qs('#regPassword').value.trim()
+      password: qs('#regPassword').value.trim(),
+      verified: false,
+      verificationCode: Math.floor(100000 + Math.random() * 900000).toString(),
+      lastSignedIn: false
     };
 
     if (!user.name || !user.surname || !user.nickname || !user.email || !user.password) {
@@ -182,7 +240,32 @@ function initPageEvents() {
     }
 
     localStorage.setItem('satBoosterUser', JSON.stringify(user));
-    showPage(pageAchievements);
+    alert(`Verification code has been sent to ${user.email}. Code: ${user.verificationCode}`);
+    showPage(pageVerify);
+  });
+
+  verifyForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const code = qs('#verifyCode').value.trim();
+    const stored = localStorage.getItem('satBoosterUser');
+
+    if (!stored) {
+      alert('No account pending verification. Please sign up first.');
+      return;
+    }
+
+    const user = JSON.parse(stored);
+    if (user.verificationCode !== code) {
+      alert('Verification code is incorrect.');
+      return;
+    }
+
+    user.verified = true;
+    user.lastSignedIn = true;
+    delete user.verificationCode;
+    localStorage.setItem('satBoosterUser', JSON.stringify(user));
+    populatePracticeDashboard(user);
+    showPage(pagePractice);
   });
 
   achievementForm.addEventListener('submit', event => {
@@ -199,14 +282,29 @@ function initPageEvents() {
       return;
     }
 
+    saveAchievementSummary(values);
     const plan = generateAchievementPlan(values);
     renderAchievementPlan(plan);
+  });
+
+  viewPlan.addEventListener('click', () => showPage(pageAchievements));
+  signOut.addEventListener('click', () => {
+    const stored = localStorage.getItem('satBoosterUser');
+    if (stored) {
+      const user = JSON.parse(stored);
+      user.lastSignedIn = false;
+      localStorage.setItem('satBoosterUser', JSON.stringify(user));
+    }
+    showPage(pageHome);
   });
 }
 
 function init() {
   initCanvas();
   initPageEvents();
+  if (!loadActiveSession()) {
+    showPage(pageHome);
+  }
 }
 
 init();
