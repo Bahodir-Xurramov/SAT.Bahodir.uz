@@ -2,8 +2,8 @@
 html,body{width:100%;height:100%;overflow:hidden;background:#08111d;color:#edf2ff}
 body{display:flex;align-items:center;justify-content:center}
 .page-shell{position:relative;width:100%;min-height:100vh;overflow:hidden}
-#bgCanvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0}
-.page-content{position:relative;z-index:1;display:grid;place-items:center;height:100vh;padding:24px;transition:transform .15s ease-out}
+#bgCanvas{position:fixed;top:-10%;left:-10%;width:120vw;height:120vh;z-index:0;pointer-events:none;transition:transform .15s ease-out}
+.page-content{position:relative;z-index:1;display:grid;place-items:center;height:100vh;padding:24px}
 .page{display:none;width:100%;max-width:960px;}
 .page.active{display:block}
 .home-panel{display:grid;gap:24px;padding:40px;border-radius:28px;background:rgba(10,25,50,0.85);box-shadow:0 20px 90px rgba(0,0,0,0.35);backdrop-filter:blur(18px)}
@@ -29,11 +29,17 @@ button:active{transform:scale(0.98)}
 button.primary{background:linear-gradient(135deg,#4f8dff,#2ec3ff);color:#fff;box-shadow:0 18px 40px rgba(73,141,255,0.24)}
 button.secondary{background:rgba(255,255,255,0.08);color:#e8f2ff}
 button.secondary:hover,button.primary:hover{filter:brightness(1.05)}
-.achievement-results{margin-top:24px;padding:18px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)}
+.achievement-results{margin-top:24px;padding:20px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)}
 .achievement-results h3{margin:0 0 12px;color:#ebf5ff}
 .achievement-results p{margin:8px 0;color:rgba(255,255,255,0.78)}
+.achievement-summary{margin-bottom:18px}
+.achievement-summary strong{color:#d9f1ff}
+.achievement-tasks h4{margin:0 0 12px;font-size:1.1rem;color:#f5fbff}
+.achievement-tasks ul{margin:0;padding-left:20px;color:rgba(255,255,255,0.84)}
+.achievement-tasks li{margin-bottom:10px;line-height:1.65}
 .hidden{display:none}
 @media(max-width:720px){.page-content{padding:16px}
 .card-panel{padding:24px}
 h1{font-size:2.8rem}}
+
 
