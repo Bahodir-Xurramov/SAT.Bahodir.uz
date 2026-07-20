@@ -1,0 +1,16 @@
+*{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+body{margin:0;background:#f4f7fb;color:#0b1a2b}
+.container{max-width:820px;margin:32px auto;padding:16px}
+.card{background:white;border-radius:10px;padding:16px;margin-bottom:16px;box-shadow:0 6px 18px rgba(12,24,40,0.06)}
+h1{margin:0 0 12px}
+label{display:block;margin:8px 0}
+input[type=text],input[type=number],input[type=date]{width:100%;padding:10px;border:1px solid #e3e8ef;border-radius:6px}
+.chips{display:flex;gap:12px;padding:8px 0;border:none}
+.actions{display:flex;gap:8px;margin-top:8px}
+button{background:#2b6ef6;color:white;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
+button.secondary{background:#e6eefc;color:#0b1a2b}
+#routine h2{margin-top:0}
+.routine-day{border-left:4px solid #2b6ef6;padding:8px;margin:8px 0;border-radius:6px;background:#fbfdff}
+.small{font-size:0.9rem;color:#4b5563}
+.footer-note{font-size:0.85rem;color:#6b7280;margin-top:8px}
+@media(min-width:720px){label{display:block}}
