@@ -38,16 +38,16 @@ function initCanvas() {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
 
-    if (pageContent) {
-      const offsetX = (e.clientX - width / 2) * 0.03;
-      const offsetY = (e.clientY - height / 2) * 0.03;
-      pageContent.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
+    if (bgCanvas) {
+      const offsetX = (e.clientX - width / 2) * 0.01;
+      const offsetY = (e.clientY - height / 2) * 0.01;
+      bgCanvas.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
     }
   });
 
   window.addEventListener('mouseout', () => {
-    if (pageContent) {
-      pageContent.style.transform = 'translate3d(0, 0, 0)';
+    if (bgCanvas) {
+      bgCanvas.style.transform = 'translate3d(0, 0, 0)';
     }
   });
 
@@ -65,8 +65,8 @@ function initCanvas() {
       const dx = node.x - mouse.x;
       const dy = node.y - mouse.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 180) {
-        const push = (180 - dist) * 0.01;
+      if (dist < 80) {
+        const push = (80 - dist) * 0.0005;
         node.x += dx * push;
         node.y += dy * push;
       }
@@ -119,7 +119,8 @@ function generateAchievementPlan(values) {
 
   return {
     title: `Goal: reach ${target}`,
-    summary: `Your current score is ${current}, and you can study ${hours} hour${hours === 1 ? '' : 's'} per day. This plan emphasizes ${topicList}.`,
+    summary: `Your current score is ${current}, and you can study ${hours} hour${hours === 1 ? '' : 's'} per day.`,
+    focus: topicList,
     tasks: [
       `Practice ${hours >= 2 ? 'two' : 'one'} focused SAT study session${hours >= 2 ? 's' : ''} daily`,
       `Review your weaknesses in ${topicList}`,
@@ -132,9 +133,15 @@ function generateAchievementPlan(values) {
 function renderAchievementPlan(plan) {
   achievementResults.classList.remove('hidden');
   achievementResults.innerHTML = `
-    <h3>${plan.title}</h3>
-    <p>${plan.summary}</p>
-    <ul>${plan.tasks.map(task => `<li>${task}</li>`).join('')}</ul>
+    <div class="achievement-summary">
+      <h3>${plan.title}</h3>
+      <p>${plan.summary}</p>
+      <p><strong>Focus areas:</strong> ${plan.focus || 'Balanced review across all sections'}</p>
+    </div>
+    <div class="achievement-tasks">
+      <h4>What to work on</h4>
+      <ul>${plan.tasks.map(task => `<li>${task}</li>`).join('')}</ul>
+    </div>
   `;
 }
 
