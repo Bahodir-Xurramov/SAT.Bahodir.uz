@@ -186,6 +186,18 @@ function initPageEvents() {
   backToRegister.addEventListener('click', () => showPage(pageRegister));
   backToSignUp.addEventListener('click', () => showPage(pageRegister));
 
+  qsa('.password-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      const targetId = button.dataset.target;
+      const input = qs(`#${targetId}`);
+      if (!input) return;
+      const showing = input.type === 'text';
+      input.type = showing ? 'password' : 'text';
+      button.textContent = showing ? 'Show' : 'Hide';
+      button.setAttribute('aria-label', `${showing ? 'Show' : 'Hide'} password`);
+    });
+  });
+
   signInForm.addEventListener('submit', event => {
     event.preventDefault();
     const email = qs('#signInEmail').value.trim();
@@ -301,3 +313,4 @@ function init() {
 }
 
 init();
+
